@@ -18,6 +18,7 @@ namespace fun1
         Thread th;
         Color currentColor;
         bool stopThread = false;
+        bool KILLThread = false;
         int leftTime = 255;
 
         public Form1()
@@ -30,24 +31,46 @@ namespace fun1
             label3.BackColor = Color.FromArgb(0, label3.BackColor);
         }
 
+        private bool IsCursorOnForm(Form form)
+        {
+            Point cursorPosition = Cursor.Position;  // Получаем текущую позицию курсора
+            Rectangle formBounds = form.Bounds;      // Получаем границы формы
+
+            // Проверяем, содержит ли прямоугольник формы координаты курсора
+            if (formBounds.Contains(cursorPosition))
+            {
+                return true;  // Курсор находится на форме
+            }
+            else
+            {
+                return false; // Курсор не находится на форме
+            }
+        }
+
         private void SetCursorPositionColor()
         {
-            while (!stopThread)
-            { 
-                Color color = ScreenColorPicker.GetCursorPositionColor();
-                BackColor = color;
-                currentColor = color;
-                label1.ForeColor = color;
-                label2.ForeColor = color;
-                label3.ForeColor = color;
-                label1.Text = $"R:{color.R}\t G:{color.G}\t B:{color.B}";
-                //Thread.Sleep(100);
-            }
+            while(!KILLThread)
+            {
+                while (!stopThread)
+                {
+                    Color color = ScreenColorPicker.GetCursorPositionColor();
+
+                    if (!IsCursorOnForm(this))
+                    {
+                        BackColor = color;
+                        currentColor = color;
+                        label1.ForeColor = color;
+                        label2.ForeColor = color;
+                        label3.ForeColor = color;
+                        label1.Text = $"R:{color.R}\t G:{color.G}\t B:{color.B}";
+                    }
+                }
+            }            
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            stopThread = true;
+            KILLThread = true;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -65,9 +88,24 @@ namespace fun1
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+            if(e.KeyCode == Keys.S)
+            {
+                if (!stopThread)
+                { 
+                    stopThread = true;
+                }
+                else
+                { 
+                    stopThread = false;
+                }
+            }
+
             if(e.Control && e.KeyCode == Keys.C) 
             {
                 Clipboard.SetText($"{currentColor.R};{currentColor.G};{currentColor.B}");
+
+                if (currentColor.R >= 128 && currentColor.G >= 128 && currentColor.B >= 128) label3.BackColor = Color.Black;
+                else label3.BackColor = Color.White;
 
                 leftTime = 255;
                 timer1.Start();

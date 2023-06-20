@@ -52,11 +52,12 @@
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Segoe UI Black", 8F, System.Drawing.FontStyle.Bold);
-            this.label2.Location = new System.Drawing.Point(579, 74);
+            this.label2.Location = new System.Drawing.Point(578, 22);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(141, 26);
+            this.label2.Size = new System.Drawing.Size(141, 78);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Чтобы скопировать\r\nцвет, нажмите CTRL + C\r\n";
+            this.label2.Text = "Чтобы скопировать\r\nцвет, нажмите CTRL + C\r\n\r\nЧтобы остановить\r\nили запустить поис" +
+    "к\r\nцвета, нажмите S\r\n";
             this.label2.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             // 
             // label1
