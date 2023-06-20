@@ -62,7 +62,19 @@ namespace fun1
                         label1.ForeColor = color;
                         label2.ForeColor = color;
                         label3.ForeColor = color;
+                        label4.ForeColor = color;
                         label1.Text = $"R:{color.R}\t G:{color.G}\t B:{color.B}";
+
+                        if (currentColor.R >= 128 && currentColor.G >= 128 && currentColor.B >= 128)
+                        {
+                            panel1.BackColor = Color.FromArgb(200, Color.Black);
+                            label4.BackColor = panel1.BackColor;
+                        }
+                        else
+                        {
+                            panel1.BackColor = Color.FromArgb(200, Color.White);
+                            label4.BackColor = panel1.BackColor;
+                        }
                     }
                 }
             }            
@@ -70,6 +82,7 @@ namespace fun1
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            th.Abort();
             KILLThread = true;
         }
 
@@ -88,16 +101,10 @@ namespace fun1
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.S)
+            if (e.KeyCode == Keys.S)
             {
-                if (!stopThread)
-                { 
-                    stopThread = true;
-                }
-                else
-                { 
-                    stopThread = false;
-                }
+                stopThread = stopThread ? false : true;
+                label4.Visible = label4.Visible ? false : true;
             }
 
             if(e.Control && e.KeyCode == Keys.C) 
