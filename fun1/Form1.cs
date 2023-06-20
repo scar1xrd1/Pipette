@@ -16,7 +16,9 @@ namespace fun1
     {
         Random rand = new Random();
         Thread th;
+        Color currentColor;
         bool stopThread = false;
+        int leftTime = 255;
 
         public Form1()
         {
@@ -25,6 +27,7 @@ namespace fun1
             th.Start();
 
             panel1.BackColor = Color.FromArgb(200, panel1.BackColor);
+            label3.BackColor = Color.FromArgb(0, label3.BackColor);
         }
 
         private void SetCursorPositionColor()
@@ -33,16 +36,13 @@ namespace fun1
             { 
                 Color color = ScreenColorPicker.GetCursorPositionColor();
                 BackColor = color;
+                currentColor = color;
                 label1.ForeColor = color;
                 label2.ForeColor = color;
+                label3.ForeColor = color;
                 label1.Text = $"R:{color.R}\t G:{color.G}\t B:{color.B}";
                 //Thread.Sleep(100);
             }
-        }
-
-        private void Form1_MouseMove(object sender, MouseEventArgs e)
-        {
-            
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -50,9 +50,28 @@ namespace fun1
             stopThread = true;
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void timer1_Tick(object sender, EventArgs e)
         {
-            
+            leftTime-= 4;
+
+            if (leftTime < 0) 
+            {
+                label3.BackColor = Color.FromArgb(0, label3.BackColor);
+                leftTime = 255; 
+                timer1.Stop();
+            }
+            else label3.BackColor = Color.FromArgb(leftTime, label3.BackColor);            
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Control && e.KeyCode == Keys.C) 
+            {
+                Clipboard.SetText($"{currentColor.R};{currentColor.G};{currentColor.B}");
+
+                leftTime = 255;
+                timer1.Start();
+            }
         }
     }
 
