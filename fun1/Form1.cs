@@ -14,6 +14,7 @@ namespace fun1
 {
     public partial class Form1 : Form
     {
+        CopyFormat copyFormat = CopyFormat.RGB;
         Random rand = new Random();
         Thread th;
         Color currentColor;
@@ -29,6 +30,7 @@ namespace fun1
 
             panel1.BackColor = Color.FromArgb(200, panel1.BackColor);
             label3.BackColor = Color.FromArgb(0, label3.BackColor);
+            label5.Text = $"Копировать в формате: {copyFormat.ToString()}";
         }
 
         private bool IsCursorOnForm(Form form)
@@ -63,6 +65,7 @@ namespace fun1
                         label2.ForeColor = color;
                         label3.ForeColor = color;
                         label4.ForeColor = color;
+                        label5.ForeColor = color;
                         label1.Text = $"R:{color.R}\t G:{color.G}\t B:{color.B}";
 
                         if (currentColor.R >= 128 && currentColor.G >= 128 && currentColor.B >= 128)
@@ -109,15 +112,115 @@ namespace fun1
 
             if(e.Control && e.KeyCode == Keys.C) 
             {
-                Clipboard.SetText($"{currentColor.R};{currentColor.G};{currentColor.B}");
-
                 if (currentColor.R >= 128 && currentColor.G >= 128 && currentColor.B >= 128) label3.BackColor = Color.Black;
                 else label3.BackColor = Color.White;
+
+                if(copyFormat == CopyFormat.Image)
+                {
+                    Bitmap bitmap = CreateSquareBitmap(1024, currentColor);
+                    Clipboard.SetImage(bitmap);
+                }
+                else if(copyFormat == CopyFormat.RGB) Clipboard.SetText($"{currentColor.R};{currentColor.G};{currentColor.B}");
+                else if(copyFormat == CopyFormat.HSL)
+                {
+                    double h, s, l;
+                    RGBtoHSL(currentColor.R, currentColor.G, currentColor.B, out h, out s, out l);
+                    Clipboard.SetText($"{Math.Round(h, 0)}°;{Math.Round(s, 0)}%;{Math.Round(l, 0)}%");
+                }
 
                 leftTime = 255;
                 timer1.Start();
             }
+            else if(e.KeyCode == Keys.C)
+            {
+                var values = (CopyFormat[])Enum.GetValues(typeof(CopyFormat));
+                int currentIndex = 0;
+                 
+                for (int i = 0; i < values.Length; i++) if (copyFormat == values[i]) currentIndex = i;
+
+                if (currentIndex + 1 == values.Length) copyFormat = values[0];
+                else copyFormat = values[currentIndex+1];
+
+                label5.Text = $"Копировать в формате: {copyFormat.ToString()}";
+            }
         }
+
+        public static void RGBtoHSL(int r, int g, int b, out double h, out double s, out double l)
+        {
+            double rd = r / 255.0;
+            double gd = g / 255.0;
+            double bd = b / 255.0;
+
+            double max = Math.Max(rd, Math.Max(gd, bd));
+            double min = Math.Min(rd, Math.Min(gd, bd));
+
+            double hue, saturation, lightness;
+            double diff = 0;
+
+            // Определение оттенка
+            if (max == min)
+            {
+                hue = 0; // Оттенок не имеет значения, если цвет - оттенок серого
+            }
+            else
+            {
+                diff = max - min;
+
+                if (max == rd)
+                {
+                    hue = ((gd - bd) / diff) % 6;
+                }
+                else if (max == gd)
+                {
+                    hue = ((bd - rd) / diff) + 2;
+                }
+                else // max == bd
+                {
+                    hue = ((rd - gd) / diff) + 4;
+                }
+
+                hue *= 60; // Перевод оттенка в градусы
+            }
+
+            // Определение светлоты
+            lightness = (max + min) / 2;
+
+            // Определение насыщенности
+            if (lightness <= 0.5)
+            {
+                saturation = diff / (max + min);
+            }
+            else
+            {
+                saturation = diff / (2 - max - min);
+            }
+
+            h = hue;
+            s = saturation;
+            l = lightness;
+        }
+
+        private static Bitmap CreateSquareBitmap(int size, Color color)
+        {
+            Bitmap bitmap = new Bitmap(size, size);
+
+            using (Graphics graphics = Graphics.FromImage(bitmap))
+            {
+                using (Brush brush = new SolidBrush(color))
+                {
+                    graphics.FillRectangle(brush, 0, 0, size, size);
+                }
+            }
+
+            return bitmap;
+        }
+    }
+
+    public enum CopyFormat
+    {
+        Image,
+        RGB,
+        HSL
     }
 
     public class ScreenColorPicker

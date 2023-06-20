@@ -36,12 +36,14 @@
             this.label3 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Location = new System.Drawing.Point(12, 167);
@@ -53,13 +55,13 @@
             // 
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("Segoe UI Black", 8F, System.Drawing.FontStyle.Bold);
-            this.label2.Location = new System.Drawing.Point(575, 16);
+            this.label2.Font = new System.Drawing.Font("Segoe UI Black", 9F, System.Drawing.FontStyle.Bold);
+            this.label2.Location = new System.Drawing.Point(562, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(141, 78);
+            this.label2.Size = new System.Drawing.Size(154, 105);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Чтобы скопировать\r\nцвет, нажмите CTRL + C\r\n\r\nЧтобы остановить\r\nили запустить поис" +
-    "к\r\nцвета, нажмите S\r\n";
+            this.label2.Text = "Чтобы скопировать\r\nцвет, нажмите CTRL + C\r\n \r\nЧтобы остановить\r\nили запустить пои" +
+    "ск\r\nцвета, нажмите S\r\n\r\n";
             this.label2.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             // 
             // label1
@@ -67,7 +69,7 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Segoe UI Black", 40F, System.Drawing.FontStyle.Bold);
-            this.label1.Location = new System.Drawing.Point(0, 22);
+            this.label1.Location = new System.Drawing.Point(-5, 13);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(329, 72);
             this.label1.TabIndex = 0;
@@ -102,6 +104,18 @@
             this.label4.Text = "ПОИСК ЦВЕТА ОСТАНОВЛЕН";
             this.label4.Visible = false;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.Transparent;
+            this.label5.Font = new System.Drawing.Font("Segoe UI Black", 9F, System.Drawing.FontStyle.Bold);
+            this.label5.Location = new System.Drawing.Point(4, 85);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(187, 15);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "Тип копируемого значения: \r\n";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -115,6 +129,8 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Пипетка";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
@@ -133,6 +149,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
     }
 }
 
